@@ -4,9 +4,11 @@ Scam and spam calls are a growing threat, where fraudsters impersonate banks, go
 officials, or relatives to trick people into revealing sensitive information (like OTPs, bank details, 
 or passwords). 
 Most victims fail to recognize such calls in real time. 
-Problem: Users currently have no intelligent system that listens to calls in real time, 
+
+**Problem**: Users currently have no intelligent system that listens to calls in real time, 
 analyzes conversations, and alerts them during the ongoing call if it’s potentially a scam. 
 Project Idea 
+
 We propose an AI-powered Real-Time Scam Call Detection System: 
 • When a phone call starts, the app automatically activates. 
 • It listens to both sides of the call in real time. 
