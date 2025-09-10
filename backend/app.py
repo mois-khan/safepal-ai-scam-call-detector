@@ -42,7 +42,8 @@ def transcribe_audio():
         )
     
     finally:
-        os.remove(tmp_path)
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
 
 
 def scam_detector(transcript):
