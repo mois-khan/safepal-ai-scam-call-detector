@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./index.css";
 
 function App() {
   const [audioFile, setAudioFile] = useState(null);
@@ -32,23 +33,70 @@ function App() {
     setLoading(false);
   };
 
+  // Color Speaker A/B appropriately
+const formatTranscript = txt =>
+  txt.split('\n').map((line, idx) => {
+    if (!line.trim()) return <div key={idx} style={{ height: 8 }} />;
+    if (line.startsWith("Speaker A:"))
+      return <div className="speakerA" key={idx}>{line}</div>;
+    if (line.startsWith("Speaker B:"))
+      return <div className="speakerB" key={idx}>{line}</div>;
+    return <div key={idx}>{line}</div>;
+  });
+
+
   return (
-    <div style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif", border: "1px solid #ddd", borderRadius: 8, padding: 24 }}>
-      <h2>Scam Call Detector</h2>
-      <form onSubmit={handleUpload}>
-        <input type="file" accept="audio/*" onChange={e => setAudioFile(e.target.files[0])} />
-        <button type="submit" disabled={loading} style={{ marginLeft: 10 }}>
-          {loading ? "Analyzing..." : "Upload & Analyze"}
-        </button>
-      </form>
-      {transcript && (
-        <>
-          <h4>Transcript</h4>
-          <div style={{ background: "#f7f7f7", padding: 12, borderRadius: 4 }}>{transcript}</div>
-          <h4>Scam Verdict: {verdict ? <span style={{ color: verdict === "Scam" ? "red" : "green" }}>{verdict}</span> : ""}</h4>
-          <div><b>Explanation:</b> {explanation}</div>
-        </>
-      )}
+    <div className="app-container">
+      <div className="simple-card">
+        <h1>Scam Call Detector</h1>
+        <form onSubmit={handleUpload} className="upload-row">
+          <label className="input-file-label">
+            Choose File
+            <input
+              type="file"
+              accept="audio/*"
+              onChange={e => setAudioFile(e.target.files[0])}
+            />
+          </label>
+          {audioFile &&
+            <span className="audio-filename">{audioFile.name}</span>
+          }
+          <button type="submit" disabled={loading} className="upload-btn">
+            {loading ? "Analyzing..." : "Upload & Analyze"}
+          </button>
+        </form>
+        {transcript && (
+          <div className="result-row">
+            <div className="transcript-card">
+              <div className="section-title">Transcript</div>
+              <div className="transcript-content">
+                {formatTranscript(transcript)}
+              </div>
+            </div>
+            <div className="verdict-card">
+              <div className="section-title">Verdict</div>
+              <div className={verdict === "Scam" ? "verdict-badge" : "verdict-badge verdict-safe"}>
+                {verdict}
+              </div>
+              <div className="explanation-callout">
+                <div className="explanation-title">Explanation</div>
+                <div className="explanation-text">
+                  {explanation}
+                </div>
+             </div>
+
+            </div>
+          </div>
+        )}
+      </div>
+      <div style={{
+        textAlign: "center",
+        fontSize: "12px",
+        color: "#7d9bae",
+        marginTop: 18
+      }}>
+        © {new Date().getFullYear()} SafePal &bull; Scam Detector Presentation
+      </div>
     </div>
   );
 }

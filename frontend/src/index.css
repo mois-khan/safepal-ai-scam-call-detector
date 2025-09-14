@@ -1,13 +1,214 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(110deg, #343a4c 48%, #657fb6 100%);
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.simple-card {
+  width: 80vw;
+  max-width: 80%;
+  margin: 32px auto 0 auto;
+  border-radius: 18px;
+  background: rgba(27, 29, 34, 0.85);
+  box-shadow: 0 6px 32px #10151f28;
+  border: 2px solid #a0c0ff22;
+  backdrop-filter: blur(8px) saturate(108%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 4vw 32px 4vw;
+}
+
+h1 {
+  text-align: center;
+  font-weight: 900;
+  font-size: 2.2rem;
+  margin-bottom: 28px;
+  color: #f3f5fc;
+  letter-spacing: .02em;
+}
+
+.upload-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.input-file-label {
+  cursor: pointer;
+  padding: 7px 15px;
+  background: #22293b;
+  color: #dbf3ff;
+  border-radius: 8px;
+  border: 1.5px solid #36415b;
+  font-weight: 700;
+  font-size: 15.1px;
+  transition: background .13s;
+}
+
+.input-file-label:hover { background: #2e3b56; }
+
+input[type="file"] {
+  opacity: 0;
+  width: 0; height: 0;
+  position: absolute; left: 0; top: 0;
+  cursor: pointer;
+}
+.audio-filename {
+  font-size: 14px;
+  color: #bcc7d6;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.upload-btn {
+  padding: 6px 19px;
+  border-radius: 7px;
+  background: #4177ce;
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  font-size: 15px;
+  transition: background .14s;
+  box-shadow: 0 1.5px 4px #27408e1a;
+  cursor: pointer;
+}
+.upload-btn:disabled {
+  background: #26293b;
+  color: #b8b8b8;
+  cursor: wait;
+}
+
+.result-row {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+.transcript-card, .verdict-card {
+  border-radius: 12px;
+  background: rgba(255,255,255,0.055);
+  border: 1.2px solid #3c4b69;
+  padding: 22px 18px 16px 20px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+}
+.transcript-card {
+  flex: 1.4;
+  margin-right: 8px;
+}
+.verdict-card {
+  flex: 1;
+  align-items: flex-start;
+}
+
+.section-title {
+  font-size: 17.7px;
+  font-weight: 800;
+  color: #daddee;
+  margin-bottom: 12px;
+  letter-spacing: .012em;
+  font-family: inherit;
+}
+.transcript-content {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  color: #f6f8fb;
+  white-space: pre-line;
+  line-height: 1.62;
+  max-height: 320px;            /* adjust height as desired (e.g., 260px or 300px) */
+  overflow-y: auto;
+  padding-right: 8px;           /* space for scrollbar */
+  box-sizing: border-box;
+  border-radius: 6px;
+  background: rgba(34, 40, 56, 0.17);
+  margin-bottom: 0;
+}
+.transcript-content::-webkit-scrollbar {
+  width: 7px;
+  background: transparent;
+}
+.transcript-content::-webkit-scrollbar-thumb {
+  background: #3e4762;
+  border-radius: 7px;
+}
+
+.verdict-badge {
+  margin-top: 7px;
+  display: inline-block;
+  padding: 8px 35px;
+  border-radius: 18px;
+  background: rgba(239, 67, 98, 0.18); /* Soft red glassy */
+  color: #fd4e6a;
+  font-weight: 900;
+  font-size: 1.55rem;
+  letter-spacing: .04em;
+  border: 1.5px solid #c2434d99;
+  box-shadow: 0 2px 16px 0 #fd748429;
+  backdrop-filter: blur(3px) saturate(120%);
+  margin-bottom: 18px;
+  text-shadow: 0 2px 16px #fd4e6a32;
+}
+
+
+.verdict-safe {
+  background: rgba(46, 200, 139, 0.16); /* Soft green glassy */
+  color: #60daa1;
+  border: 1.4px solid #60daa1a8;
+  box-shadow: 0 2px 15px #60daa122;
+  text-shadow: 0 2px 12px #60daa145;
+}
+
+.explanation-callout {
+  font-size: 15.4px;
+  background: rgba(245,247,252,0.08);
+  color: #f2f4fa;
+  border-radius: 10px;
+  padding: 16px 16px 13px 16px;
+  border: 1.2px solid #4c79a9;
+  line-height: 1.62;
+  font-weight: 500;
+  margin-bottom: 0;
+  margin-top: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.explanation-title {
+  font-weight: 800;
+  font-size: 16.1px;
+  margin-bottom: 7px;
+  letter-spacing: .02em;
+  color: #a9c7f5;
+}
+.explanation-text {
+  font-weight: 500;
+  color: #f2f4fa;
+  font-size: 15.3px;
+}
+
+
+.speakerA {
+  color: #50e6f3;
+  font-weight: 700;
+}
+.speakerB {
+  color: #f3b15b;
+  font-weight: 700;
+}
+
+
+@media (max-width: 850px) {
+  .simple-card { padding: 12px 4vw 8px 4vw; }
+  .result-row { flex-direction: column; gap: 14px;}
+  .transcript-card, .verdict-card { margin-right: 0; }
 }
