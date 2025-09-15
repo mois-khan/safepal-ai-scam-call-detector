@@ -1,31 +1,56 @@
-# safepal-ai-scam-call-detector
+# SafePal-AI — Real-Time Scam Call Detector
 
-Scam and spam calls are a growing threat, where fraudsters impersonate banks, government 
-officials, or relatives to trick people into revealing sensitive information (like OTPs, bank details, 
-or passwords). 
-Most victims fail to recognize such calls in real time. 
+**SafePal-AI** is an AI-powered tool to detect scams in phone calls using real-time audio analysis, natural language processing, and speaker diarization.
 
-**Problem**: Users currently have no intelligent system that listens to calls in real time, 
-analyzes conversations, and alerts them during the ongoing call if it’s potentially a scam. 
-Project Idea 
+---
 
-We propose an AI-powered Real-Time Scam Call Detection System: 
+## Features
 
-• When a phone call starts, the app automatically activates. 
-• It listens to both sides of the call in real time. 
-• It performs: 
-1. Speaker separation (Caller vs Receiver). 
-2. Speech-to-text transcription (live captions). 
-3. Scam detection analysis using an LLM (or custom classifier).
-   
-• If suspicious activity is detected (e.g., asking for OTP, impersonating bank/government), 
-the system will:
+- **Real-time speech-to-text**  
+  Converts audio to text in multiple languages.
+- **Automatic English translation**  
+  Returns all transcripts in English using Whisper.
+- **Speaker diarization**  
+  Displays “who said what,” when possible.
+- **AI-powered scam detection**  
+  Uses Gemini API and/or GPT-4o for smart analysis.
+- **Clean UI**  
+  Mobile/web frontend for easy use.
 
-o Alert the user immediately with a live warning notification. 
+---
 
-o Continue to provide transcriptions and analysis during the call. 
+## Tech Stack
 
-This system will protect innocent users from fraud by combining speech recognition, NLP, 
-and real-time alerting. 
+| Component         | Technology                  |
+|-------------------|----------------------------|
+| Frontend          | React.js(demo) / Flutter(app)         |
+| Backend           | Python Flask               |
+| STT & Translation | OpenAI Whisper             |
+| Diarization       | AssemblyAI API             |
+| Scam Detection    | Gemini API (Google) / openAI GPT-4o       |
 
-Tools & Technologies You’ll Need
+---
+
+## How It Works
+
+1. **User uploads a phone call recording**  
+2. **Whisper:**  
+   - Transcribes and auto-translates all speech to English  
+3. **AssemblyAI:**  
+   - Performs speaker diarization (labels who spoke when)
+4. **Gemini API:**  
+   - Gives a “Scam/Not Scam” verdict and brief explanation
+5. **Frontend shows:**  
+   - Text transcript with speakers, scam verdict, and reason
+
+---
+
+
+## Credits
+
+- Project by Mois Khan & Satwika Abbu for NxtWave Buildathon 2025  
+- Powered by OpenAI Whisper, AssemblyAI, Gemini API
+
+---
+
+
