@@ -33,7 +33,7 @@ function App() {
     setLoading(false);
   };
 
-  // Color Speaker A/B appropriately
+
 const formatTranscript = txt =>
   txt.split('\n').map((line, idx) => {
     if (!line.trim()) return <div key={idx} style={{ height: 8 }} />;

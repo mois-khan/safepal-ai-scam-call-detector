@@ -1,5 +1,7 @@
 Flask
+flask_cors
+python-dotenv
+requests
 openai
-Whisper
-Os
-dotenv
+whisper
+torch

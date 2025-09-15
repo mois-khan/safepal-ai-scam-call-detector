@@ -19,15 +19,18 @@ model = whisper.load_model("medium")
 
 def scam_detector(transcript_text):
     import openai
+
     client = openai.OpenAI(
         api_key=GEMINI_API_KEY,
         base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
     )
+
     prompt = (
         "Analyze the following phone call transcript. Is the caller trying to scam or defraud the receiver? "
         "Answer only 'Scam' or 'Not Scam', and then briefly explain your reasoning, but don't be too lengthy.\n\n"
         f"Transcript:\n{transcript_text.strip()}"
     )
+
     response = client.chat.completions.create(
         model="gemini-2.5-flash",
         messages=[
@@ -35,11 +38,12 @@ def scam_detector(transcript_text):
             {"role": "user", "content": prompt}
         ]
     )
+
     return response.choices[0].message.content
 
-def get_assemblyai_diarization(audio_path, polling_timeout_sec=180):
-    print("File exists?", os.path.exists(audio_path))
-    print("File size:", os.path.getsize(audio_path), "bytes")
+def get_assemblyai_diarization(audio_path, polling_timeout_sec=40):
+    # print("File exists?", os.path.exists(audio_path))
+    # print("File size:", os.path.getsize(audio_path), "bytes")
 
     headers = {'authorization': ASSEMBLYAI_API_KEY}
     # 1. Upload to AssemblyAI
@@ -70,44 +74,51 @@ def get_assemblyai_diarization(audio_path, polling_timeout_sec=180):
             poll = requests.get(f'https://api.assemblyai.com/v2/transcript/{transcript_id}', headers=headers, timeout=10)
             result = poll.json()
             status = result.get('status', str(result))
-            print("Polling result:", status)
+            # print("Polling result:", status)
             if status == 'completed':
                 print("AssemblyAI diarization done.")
                 return result.get('utterances', [])
             elif status == 'failed':
                 print("Failed result:", result)
                 raise Exception("Diarization/transcription failed: " + str(result))
+            
         except Exception as e:
             print(f"Polling exception: {e}")
-            # Wait and retry
-        # Timeout check
+
         if time.time() - start > polling_timeout_sec:
             print("Polling timed out after", polling_timeout_sec, "seconds.")
             raise TimeoutError("AssemblyAI diarization polling timed out.")
-        time.sleep(5)  # Slow down polling to avoid hitting request limits
+        
+        time.sleep(5) 
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe_audio():
-    print("Received upload...")
+    # print("Received upload...")
     if 'file' not in request.files:
         return jsonify({'error': 'No audio file uploaded'}), 400
+    
     audio_file = request.files['file']
     filename = audio_file.filename
+
     tmp_path = os.path.join(tempfile.gettempdir(), filename)
     audio_file.save(tmp_path)
-    print("Saved file:", tmp_path)
-    print("Size:", os.path.getsize(tmp_path), "bytes")
+
+    # print("Saved file:", tmp_path)
+    # print("Size:", os.path.getsize(tmp_path), "bytes")
 
     try:
-        print("Starting Whisper transcription...")
-        whisper_result = model.transcribe(tmp_path, task='transcribe', language='en')
-        print("Whisper transcription done.")
+        # print("Starting Whisper transcription...")
+        whisper_result = model.transcribe(tmp_path, task='translate', language='en')
+        # print("Whisper transcription done.")
         transcript_text = whisper_result['text']
 
-        print("Starting AssemblyAI diarization...")
+        print(transcript_text)
+
+        # print("Starting AssemblyAI diarization...")
         try:
             utterances = get_assemblyai_diarization(tmp_path)
             dialogue_transcript = "\n\n".join([f"Speaker {u['speaker']}: {u['text']}" for u in utterances])
+
         except Exception as diar_error:
             # Use simple Whisper transcript with a message if AssemblyAI fails
             print(f"AssemblyAI failed: {diar_error}")
@@ -121,6 +132,7 @@ def transcribe_audio():
             'Verdict': verdict,
             'Reason': scam_reason
         })
+    
     finally:
         if os.path.exists(tmp_path):
             os.remove(tmp_path)
