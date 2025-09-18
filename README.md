@@ -2,6 +2,8 @@
 
 **SafePal-AI** is an AI-powered tool to detect scams in phone calls using real-time audio analysis, natural language processing, and speaker diarization.
 
+(This is currently a prototype)
+
 ---
 
 ## Features
